@@ -1,0 +1,30 @@
+{$CLEO .csa}
+
+// Script Repair đa năng cho GTA SA Android
+// Bấm phím 4 để kích hoạt
+
+0000:
+
+WHILE TRUE
+    WAIT 0
+    IF
+        0AB0: key_pressed 52   // phím số 4 (trên Android keyboard mod)
+    THEN
+        // Hồi máu nhân vật
+        0223: set_actor $PLAYER_ACTOR health_to 1000
+
+        // Nếu đang lái xe -> sửa xe
+        IF
+            00DF:   actor $PLAYER_ACTOR driving
+        THEN
+            03C0: 0@ = actor $PLAYER_ACTOR car
+            0224: set_car 0@ health_to 1000
+        END
+
+        // Thông báo
+        0AF8: show_text_box "🔧 Repair Done! CLEO Reset."
+
+        // Reset nhẹ CLEO (tắt và nạp lại script)
+        0A93: end_custom_thread
+    END
+END
